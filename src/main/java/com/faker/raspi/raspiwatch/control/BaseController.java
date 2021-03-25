@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @program: SC_OneKeyToBaoZhang
+ * @program: raspiWatch
  * @description: BaseController
  * @author: 淡梦如烟
- * @create: 2020-04-07 16:15
+ * @create: 2021-03-25 16:15
  */
 @Controller
 public class BaseController {
@@ -26,6 +26,6 @@ public class BaseController {
     @GetMapping("/")
     public String index() {
         logger.info("访问首页" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return "redirect:/autoCode/creater/autoCodeCreate.html";
+        return "redirect:/index.html";
     }
 }
