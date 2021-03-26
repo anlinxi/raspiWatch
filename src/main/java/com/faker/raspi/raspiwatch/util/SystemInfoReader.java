@@ -4,7 +4,7 @@ import com.faker.raspi.raspiwatch.model.CpuInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +29,66 @@ public class SystemInfoReader {
         lineSeparator = "\n";
         logger.info("树莓派温度:" + String.valueOf(getTemperature()));
         logger.info("树莓派CPU信息:" + getCpuInfo());
+        logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
     }
 
+    /**
+     * 获取处理器使用情况
+     * @return 负载百分比
+     */
+    public static String getCpuUseInfo() {
+        String com1 = "top -n1 | awk '/Cpu\\(s\\):/ {print $2}'";
+        return exec(com1) + "%";
+    }
+
+    /**
+     * 执行命令
+     *
+     * @param command 命令
+     * @return 返回执行显示的结果
+     */
+    public static String exec(String command) {
+        Process process = null;
+        try {
+            Runtime run = Runtime.getRuntime();
+            process = run.exec(command);
+        } catch (IOException e) {
+            e.printStackTrace();
+            if (null != process) {
+                return getTextFromStream(new InputStreamReader(process.getErrorStream()));
+            }
+        }
+        InputStreamReader ir = new InputStreamReader(process.getInputStream());
+        String text = getTextFromStream(ir);
+        return text;
+
+    }
+
+    /**
+     * 从流中获取文本
+     *
+     * @param ir 输入流
+     * @return 文本
+     */
+    public static String getTextFromStream(InputStreamReader ir) {
+        LineNumberReader input = new LineNumberReader(ir);
+        String line;
+        StringBuffer stringBuffer = new StringBuffer();
+        try {
+            while ((line = input.readLine()) != null) {
+                stringBuffer.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 获取cpu信息
+     *
+     * @return cpu信息实体类
+     */
     public static CpuInfo getCpuInfo() {
         /*
         CPU implementer	: 0x41
@@ -45,25 +103,7 @@ public class SystemInfoReader {
         Model		: Raspberry Pi 4 Model B Rev 1.2
 
          */
-        List<String> cpuInfoList = getMuliText("/sys/class/thermal/thermal_zone0/temp");
-        String tempStr = "        CPU implementer\t: 0x41\n" +
-                "        CPU architecture: 8\n" +
-                "        CPU variant\t: 0x0\n" +
-                "        CPU part\t: 0xd08\n" +
-                "        CPU revision\t: 3\n" +
-                "        \n" +
-                "        Hardware\t: BCM2835\n" +
-                "        Revision\t: c03112\n" +
-                "        Serial\t\t: 1000000055194fb2\n" +
-                "        Model\t\t: Raspberry Pi 4 Model B Rev 1.2";
-        String[] arr = tempStr.split(lineSeparator);
-        cpuInfoList = new ArrayList<>();
-        for (String line : arr) {
-            if (SystemInfoReader.isNotNull(line)) {
-                cpuInfoList.add(line);
-            }
-        }
-//        logger.info(cpuInfoList.toString());
+        List<String> cpuInfoList = getMuliText("/proc/cpuinfo");
         CpuInfo cpuInfo = new CpuInfo();
         cpuInfo.readInfoFromFile(cpuInfoList);
         return cpuInfo;
