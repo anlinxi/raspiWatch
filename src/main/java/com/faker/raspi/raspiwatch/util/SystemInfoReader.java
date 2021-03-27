@@ -28,7 +28,7 @@ public class SystemInfoReader {
     public static void main(String[] args) {
         lineSeparator = "\n";
         logger.info("树莓派温度:" + String.valueOf(getTemperature()));
-        logger.info("树莓派CPU信息:" + getCpuInfo());
+//        logger.info("树莓派CPU信息:" + getCpuInfo());
         logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
     }
 
@@ -38,30 +38,7 @@ public class SystemInfoReader {
      */
     public static String getCpuUseInfo() {
         String com1 = "top -n1 | awk '/Cpu\\(s\\):/ {print $2}'";
-        return exec(com1) + "%";
-    }
-
-    /**
-     * 执行命令
-     *
-     * @param command 命令
-     * @return 返回执行显示的结果
-     */
-    public static String exec(String command) {
-        Process process = null;
-        try {
-            Runtime run = Runtime.getRuntime();
-            process = run.exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-            if (null != process) {
-                return getTextFromStream(new InputStreamReader(process.getErrorStream()));
-            }
-        }
-        InputStreamReader ir = new InputStreamReader(process.getInputStream());
-        String text = getTextFromStream(ir);
-        return text;
-
+        return CommandUtil.exeCommand(com1) + "%";
     }
 
     /**
