@@ -1,5 +1,6 @@
 package com.faker.raspi.raspiwatch.util;
 
+import cn.hutool.core.util.ReUtil;
 import com.faker.raspi.raspiwatch.model.CpuInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class SystemInfoReader {
     public static void main(String[] args) {
         lineSeparator = "\n";
         logger.info("树莓派温度:" + String.valueOf(getTemperature()));
-//        logger.info("树莓派CPU信息:" + getCpuInfo());
+        logger.info("树莓派CPU信息:" + getCpuInfo());
         logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
     }
 
@@ -37,8 +38,11 @@ public class SystemInfoReader {
      * @return 负载百分比
      */
     public static String getCpuUseInfo() {
-        String com1 = "top -n1 | awk '/Cpu\\(s\\):/ {print $2}'";
-        return CommandUtil.exeCommand(com1) + "%";
+        String com1 = "top -b -n 1";
+        String top =  CommandUtil.exeCommand(com1) ;
+        //正则查找匹配的第一个字符串
+        String cpuUse = ReUtil.get("/Cpu\\(s\\):/",top,0);
+        return cpuUse + "%";
     }
 
     /**

@@ -69,7 +69,7 @@ public class CommandUtil {
 
     public static void main(String[] args) {
         logger.info(exeCommand("pwd"));
-        logger.info(exeCommand("ls"));
+        logger.info(exeCommand("top -b -n 1 | awk '/Cpu\\(s\\):/ {print $2}'"));
     }
 
 }
