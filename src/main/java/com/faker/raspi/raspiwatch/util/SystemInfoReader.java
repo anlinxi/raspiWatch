@@ -40,8 +40,9 @@ public class SystemInfoReader {
     public static String getCpuUseInfo() {
         String com1 = "top -b -n 1";
         String top =  CommandUtil.exeCommand(com1) ;
-        //正则查找匹配的第一个字符串
-        String cpuUse = ReUtil.get("/Cpu\\(s\\):/",top,0);
+        //md正则太难了，还不如截取呢...
+        String cpuStart = "%Cpu(s): ";
+        String cpuUse = top.substring(top.indexOf(cpuStart) + cpuStart.length(), top.indexOf(" us,"));
         return cpuUse + "%";
     }
 
