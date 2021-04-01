@@ -40,10 +40,11 @@ public class SystemInfoReader {
      *
      * @return
      */
-    private static String getDiskUseInfo() {
+    private static List<DiskUseInfo> getDiskUseInfo() {
         String com1 = "df -h /";
         String df = CommandUtil.exeCommand(com1);
         List<String> list = getTextList(df);
+        List<DiskUseInfo> diskUseInfoList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (i == 0) {
                 continue;
@@ -51,8 +52,9 @@ public class SystemInfoReader {
             String line = list.get(i);
             DiskUseInfo diskUseInfo = new DiskUseInfo();
             diskUseInfo.getDiskInfoFromLine(line);
+            diskUseInfoList.add(diskUseInfo);
         }
-        return df;
+        return diskUseInfoList;
     }
 
     /**

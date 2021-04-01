@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * pi@raspberrypi:~ $ df -h /
  * 文件系统        容量  已用  可用 已用% 挂载点
@@ -26,6 +29,19 @@ public class DiskUseInfo {
     private String percentSpent;
 
     public void getDiskInfoFromLine(String line) {
-
+        if (null != line) {
+            List<String> stringList = new ArrayList<>();
+            String[] arr = line.split(" ");
+            for (String word : arr) {
+                if (null != word && !"".equals(word.trim())) {
+                    stringList.add(word);
+                }
+            }
+            this.diskPath = stringList.get(0);
+            this.capacity = stringList.get(1);
+            this.used = stringList.get(2);
+            this.usable = stringList.get(3);
+            this.percentSpent = stringList.get(4);
+        }
     }
 }
