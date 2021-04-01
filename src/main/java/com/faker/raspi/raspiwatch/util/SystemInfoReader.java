@@ -2,6 +2,7 @@ package com.faker.raspi.raspiwatch.util;
 
 import cn.hutool.core.util.ReUtil;
 import com.faker.raspi.raspiwatch.model.CpuInfo;
+import com.faker.raspi.raspiwatch.model.DiskUseInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,18 +32,40 @@ public class SystemInfoReader {
         logger.info("树莓派温度:" + String.valueOf(getTemperature()));
         logger.info("树莓派CPU信息:" + getCpuInfo());
         logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
+        logger.info("树莓派硬盘占有信息:" + getDiskUseInfo());
+    }
+
+    /**
+     * 获取树莓派硬盘占用使用情况
+     *
+     * @return
+     */
+    private static String getDiskUseInfo() {
+        String com1 = "df -h /";
+        String df = CommandUtil.exeCommand(com1);
+        List<String> list = getTextList(df);
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
+                continue;
+            }
+            String line = list.get(i);
+            DiskUseInfo diskUseInfo = new DiskUseInfo();
+            diskUseInfo.getDiskInfoFromLine(line);
+        }
+        return df;
     }
 
     /**
      * 获取处理器使用情况
+     *
      * @return 负载百分比
      */
     public static String getCpuUseInfo() {
         String com1 = "top -b -n 1";
-        String top =  CommandUtil.exeCommand(com1) ;
+        String top = CommandUtil.exeCommand(com1);
         //md正则太难了，还不如截取呢...
         String cpuStart = "%Cpu(s): ";
-        String cpuUse = top.substring(top.indexOf(cpuStart) + cpuStart.length(), top.indexOf(" us,"));
+        String cpuUse = top.substring(top.indexOf(cpuStart) + cpuStart.length(), top.indexOf(" us,")).trim();
         return cpuUse + "%";
     }
 
@@ -131,7 +154,21 @@ public class SystemInfoReader {
         List<String> stringList = null;
         String temp = getText(path);
         if (null != temp) {
-            String[] arr = temp.split(lineSeparator);
+            stringList = getTextList(temp);
+        }
+        return stringList;
+    }
+
+    /**
+     * 文本换行符分行
+     *
+     * @param text
+     * @return
+     */
+    public static List<String> getTextList(String text) {
+        List<String> stringList = null;
+        if (null != text) {
+            String[] arr = text.split(lineSeparator);
             stringList = new ArrayList<>();
             for (String line : arr) {
                 if (SystemInfoReader.isNotNull(line)) {
