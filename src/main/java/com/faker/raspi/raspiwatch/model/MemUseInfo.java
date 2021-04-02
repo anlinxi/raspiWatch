@@ -35,6 +35,7 @@ public class MemUseInfo {
 
     /**
      * 转换内存参数
+     *
      * @param line 一行返回的文本信息
      */
     public void getMemInfoFromLine(String line) {
@@ -48,19 +49,34 @@ public class MemUseInfo {
             }
             System.out.println(stringList);
             this.name = stringList.get(0).substring(0).substring(0, stringList.get(0).length() - 1);
-            this.used = getShowText(stringList.get(2));
-            this.free = getShowText(stringList.get(3));
-            this.shared = getShowText(stringList.get(4));
-            this.cache = getShowText(stringList.get(5));
-            this.available = getShowText(stringList.get(6));
+            this.used = getShowTextList(stringList, 2);
+            this.free = getShowTextList(stringList, 3);
+            this.shared = getShowTextList(stringList, 4);
+            this.cache = getShowTextList(stringList, 5);
+            this.available = getShowTextList(stringList, 6);
         }
     }
 
     /**
      * 转换显示容量
      *
-     * @param numStr
-     * @return
+     * @param stringList 参数列表
+     * @param index      显示的序号
+     * @return 显示的内存容量
+     */
+    private String getShowTextList(List<String> stringList, int index) {
+        //可能存在后面参数为空的情况
+        if (index < stringList.size()) {
+            return getShowText(stringList.get(index));
+        }
+        return null;
+    }
+
+    /**
+     * 转换显示容量
+     *
+     * @param numStr 内存容量数字
+     * @return 显示的内存容量
      */
     private String getShowText(String numStr) {
         Long num = Long.parseLong(numStr);
