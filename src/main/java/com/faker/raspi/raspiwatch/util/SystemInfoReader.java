@@ -3,6 +3,7 @@ package com.faker.raspi.raspiwatch.util;
 import com.faker.raspi.raspiwatch.model.CpuInfo;
 import com.faker.raspi.raspiwatch.model.DiskUseInfo;
 import com.faker.raspi.raspiwatch.model.MemUseInfo;
+import com.faker.raspi.raspiwatch.model.RaspiInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,23 @@ public class SystemInfoReader {
     }
 
     /**
+     * 获取树莓派信息
+     *
+     * @return 树莓派信息实体类
+     */
+    public static RaspiInfo getRaspiInfo() {
+        RaspiInfo raspiInfo = new RaspiInfo();
+        raspiInfo.setTemperature(String.valueOf(getTemperature()) + "℃");
+        raspiInfo.setCpuInfo(getCpuInfo());
+        raspiInfo.setCpuUseInfo(getCpuUseInfo());
+        raspiInfo.setDiskUseInfoList(getDiskUseInfo());
+        raspiInfo.setMemUseInfoList(getMemUseInfo());
+        return raspiInfo;
+    }
+
+    /**
      * 获取树莓派内存使用使用情况
+     *
      * @return
      */
     private static List<MemUseInfo> getMemUseInfo() {

@@ -118,8 +118,6 @@ public class WebSocket {
         try {
             logger.info("来自客户端消息：" + message + "客户端的id是：" + session.getId());
 
-            System.out.println("------------  :" + message);
-
             JSONObject jsonObject = JSON.parseObject(message);
             String textMessage = jsonObject.getString("message");
             String fromuserId = jsonObject.getString("userId");
@@ -159,6 +157,13 @@ public class WebSocket {
         }
     }
 
+    /**
+     * 发送给所有在线用户
+     *
+     * @param message
+     * @param FromuserId
+     * @throws IOException
+     */
     public void sendMessageAll(String message, String FromuserId) throws IOException {
         for (WebSocket item : clients.values()) {
             item.session.getAsyncRemote().sendText(message);
