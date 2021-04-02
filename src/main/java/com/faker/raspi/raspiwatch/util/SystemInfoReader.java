@@ -43,7 +43,7 @@ public class SystemInfoReader {
      * 获取树莓派内存使用使用情况
      * @return
      */
-    private static String getMemUseInfo() {
+    private static List<MemUseInfo> getMemUseInfo() {
         String com1 = "free";
         String df = CommandUtil.exeCommand(com1);
         List<String> list = getTextList(df);
@@ -57,7 +57,7 @@ public class SystemInfoReader {
             memUseInfo.getMemInfoFromLine(line);
             diskUseInfoList.add(memUseInfo);
         }
-        return null;
+        return diskUseInfoList;
     }
 
     /**

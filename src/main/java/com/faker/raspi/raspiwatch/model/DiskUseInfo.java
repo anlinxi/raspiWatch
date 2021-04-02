@@ -28,6 +28,11 @@ public class DiskUseInfo {
     @ApiModelProperty("已用百分比")
     private String percentSpent;
 
+    /**
+     * 从命令行中提取参赛
+     *
+     * @param line 返回的一行命令
+     */
     public void getDiskInfoFromLine(String line) {
         if (null != line) {
             List<String> stringList = new ArrayList<>();
@@ -38,9 +43,9 @@ public class DiskUseInfo {
                 }
             }
             this.diskPath = stringList.get(0);
-            this.capacity = stringList.get(1);
-            this.used = stringList.get(2);
-            this.usable = stringList.get(3);
+            this.capacity = stringList.get(1) + "B";
+            this.used = stringList.get(2) + "B";
+            this.usable = stringList.get(3) + "B";
             this.percentSpent = stringList.get(4);
         }
     }

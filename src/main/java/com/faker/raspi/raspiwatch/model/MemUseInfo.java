@@ -46,6 +46,7 @@ public class MemUseInfo {
                     stringList.add(word);
                 }
             }
+            System.out.println(stringList);
             this.name = stringList.get(0).substring(0).substring(0, stringList.get(0).length() - 1);
             this.used = getShowText(stringList.get(2));
             this.free = getShowText(stringList.get(3));
