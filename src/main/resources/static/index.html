@@ -16,7 +16,7 @@
         window.dashboard = null;
         var init_vals = {};
         //地址
-        var host = window.location.host
+        var host = window.location.href.replace('http://', '').replace('/index.html', '')
         // host = '10.180.104.178:8088'
     </script>
     <script src="js/webSocketConnect.js"></script>
