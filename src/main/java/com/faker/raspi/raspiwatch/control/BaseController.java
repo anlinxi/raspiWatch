@@ -26,6 +26,6 @@ public class BaseController {
     @GetMapping("/")
     public String index() {
         logger.info("访问首页" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return "redirect:/webSocketTest.html";
+        return "redirect:/index.html";
     }
 }
