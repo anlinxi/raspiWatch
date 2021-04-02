@@ -1,12 +1,15 @@
 package com.faker.raspi.raspiwatch.util;
 
-import cn.hutool.core.util.ReUtil;
 import com.faker.raspi.raspiwatch.model.CpuInfo;
 import com.faker.raspi.raspiwatch.model.DiskUseInfo;
+import com.faker.raspi.raspiwatch.model.MemUseInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,28 @@ public class SystemInfoReader {
         logger.info("树莓派CPU信息:" + getCpuInfo());
         logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
         logger.info("树莓派硬盘占有信息:" + getDiskUseInfo());
+        logger.info("树莓派内存使用信息:" + getMemUseInfo());
+    }
+
+    /**
+     * 获取树莓派内存使用使用情况
+     * @return
+     */
+    private static String getMemUseInfo() {
+        String com1 = "free";
+        String df = CommandUtil.exeCommand(com1);
+        List<String> list = getTextList(df);
+        List<MemUseInfo> diskUseInfoList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
+                continue;
+            }
+            String line = list.get(i);
+            MemUseInfo memUseInfo = new MemUseInfo();
+            memUseInfo.getMemInfoFromLine(line);
+            diskUseInfoList.add(memUseInfo);
+        }
+        return null;
     }
 
     /**
