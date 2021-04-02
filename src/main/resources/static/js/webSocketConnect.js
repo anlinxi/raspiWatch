@@ -8,36 +8,44 @@ var websocket = null;
 //判断当前浏览器是否支持WebSocket
 if ('WebSocket' in window) {
     //连接WebSocket节点
-    websocket = new WebSocket("ws://" + host + "/connectWebSocket/" + new Date().getTime());
+    websocket = getNewWebSocket();
 } else {
     alert('Not support websocket')
 }
 
-
-//连接发生错误的回调方法
-websocket.onerror = function () {
-    // setMessageInnerHTML("error");
-    websocket = new WebSocket("ws://" + host + "/connectWebSocket/" + new Date().getTime());
-};
-
-
-//连接成功建立的回调方法
-websocket.onopen = function (event) {
-    // setMessageInnerHTML("open");
-}
-
-
-//接收到消息的回调方法
-websocket.onmessage = function (event) {
-    var data = JSON.parse(event.data)
-    showRaspiInfo(data)
-    // setMessageInnerHTML(event.data);
-}
+function getNewWebSocket() {
+    var _websocket = new WebSocket("ws://" + host + "/connectWebSocket/" + new Date().getTime());
+    //连接发生错误的回调方法
+    _websocket.onerror = function () {
+        setTimeout(function () {
+            websocket = getNewWebSocket();
+        }, 5000)
+    };
+    //接收到消息的回调方法
+    _websocket.onmessage = function (event) {
+        var data = JSON.parse(event.data)
+        showRaspiInfo(data)
+        // setMessageInnerHTML(event.data);
+    }
+    //连接成功建立的回调方法
+    _websocket.onopen = function (event) {
+        // setMessageInnerHTML("open");
+    }
 
 
-//连接关闭的回调方法
-websocket.onclose = function () {
-    // setMessageInnerHTML("close");
+    //接收到消息的回调方法
+    _websocket.onmessage = function (event) {
+        var data = JSON.parse(event.data)
+        showRaspiInfo(data)
+        // setMessageInnerHTML(event.data);
+    }
+
+
+    //连接关闭的回调方法
+    _websocket.onclose = function () {
+        // setMessageInnerHTML("close");
+    }
+    return _websocket;
 }
 
 

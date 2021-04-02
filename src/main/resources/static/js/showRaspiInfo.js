@@ -4,11 +4,22 @@
 
 
 function showRaspiInfo(json) {
-    console.log('树莓派当前信息', json)
+    // console.log('树莓派当前信息', json)
     showTemperature(json.temperature)
     showMen(json)
     showTime(json)
     showCpu(json)
+    showDisk(json)
+}
+
+/**
+ * 显示硬盘占用信息
+ * @param json
+ */
+function showDisk(json) {
+    var free = json.diskUseInfoList[0].usable
+    $("#disk-percent").text(json.diskUseInfoList[0].percentSpent.replace("%", ''));
+    $("#disk-free").text(free);
 }
 
 /**
@@ -52,14 +63,23 @@ function showMen(json) {
             var percent = 0
             var total = parseInt(memtemp.total.replace('MB', ''))
             var used = parseInt(memtemp.used.replace('MB', ''))
-            $("#mem-free").text(total - used);
+            $("#mem-free").text(memtemp.free.replace('MB', ''));
             percent = used / total * 100
             percent = percent.toFixed(2)
             $("#mem-percent").text(percent);
 
             showMemCharts(total, used)
+
+            $("#mem-real-percent").text(percent);
+            $("#mem-real-free").text(memtemp.free.replace('MB', ''));
         } else if (memtemp.name == 'Swap') {
             $("#mem-swap-total").text(memtemp.total.replace('MB', ''));
+            var total = parseInt(memtemp.total.replace('MB', ''))
+            var used = parseInt(memtemp.used.replace('MB', ''))
+            percent = used / total * 100
+            percent = percent.toFixed(2)
+            $("#mem-swap-percent").text(percent);
+            $("#mem-swap-free").text(memtemp.free.replace('MB', ''));
         }
     }
 }
