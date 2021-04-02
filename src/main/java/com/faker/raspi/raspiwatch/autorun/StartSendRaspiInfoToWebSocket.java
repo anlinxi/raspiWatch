@@ -39,6 +39,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        logger.info("系统初始化完毕，开始推送树莓派信息...");
         //自动推送
         while (true) {
             try {

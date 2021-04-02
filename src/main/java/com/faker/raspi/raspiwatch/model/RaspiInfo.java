@@ -26,4 +26,7 @@ public class RaspiInfo {
 
     @ApiModelProperty("树莓派内存使用信息")
     private List<MemUseInfo> memUseInfoList;
+
+    @ApiModelProperty("树莓派时间")
+    private String dateTime;
 }

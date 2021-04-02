@@ -7,8 +7,25 @@ function showRaspiInfo(json) {
     console.log('树莓派当前信息', json)
     showTemperature(json.temperature)
     showMen(json)
-
+    showTime(json)
     showCpu(json)
+}
+
+/**
+ * 显示服务器时间
+ * @param json
+ */
+function showTime(json) {
+    var dateTime = json.dateTime
+    var date = dateTime.split(' ')[0]
+    //不要秒，秒不太准确
+    var time = dateTime.split(' ')[1].substr(0, 5)
+    $("#time").text(time)
+    $("#date").text(date)
+    //显示ip
+    var host1 = window.location.host;
+    var hostip = host1.split(":")[0]
+    $("#hostip").text(hostip)
 }
 
 /**

@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SystemInfoReader {
@@ -41,6 +43,11 @@ public class SystemInfoReader {
     }
 
     /**
+     * 日期格式化
+     */
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    /**
      * 获取树莓派信息
      *
      * @return 树莓派信息实体类
@@ -52,6 +59,7 @@ public class SystemInfoReader {
         raspiInfo.setCpuUseInfo(getCpuUseInfo());
         raspiInfo.setDiskUseInfoList(getDiskUseInfo());
         raspiInfo.setMemUseInfoList(getMemUseInfo());
+        raspiInfo.setDateTime(sdf.format(new Date()));
         return raspiInfo;
     }
 
