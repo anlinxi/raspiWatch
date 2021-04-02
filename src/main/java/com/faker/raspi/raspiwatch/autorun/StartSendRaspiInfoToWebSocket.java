@@ -54,7 +54,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
                 json = JSONObject.toJSONString(raspiInfo);
             } catch (Exception e) {
                 logger.error("获取树莓派信息错误:" + e.getMessage());
-//                e.printStackTrace();
+                e.printStackTrace();
             }
             try {
                 if (json != null) {

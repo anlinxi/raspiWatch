@@ -163,6 +163,9 @@ public class SystemInfoReader {
         List<String> cpuInfoList = getMuliText("/proc/cpuinfo");
         CpuInfo cpuInfo = new CpuInfo();
         cpuInfo.readInfoFromFile(cpuInfoList);
+        String arm_freq = CommandUtil.exeCommand("vcgencmd get_config arm_freq");
+        String armFreq = arm_freq.trim().split("=")[1];
+        cpuInfo.setArmFreq(armFreq);
         return cpuInfo;
     }
 

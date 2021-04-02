@@ -46,6 +46,8 @@ public class CpuInfo {
     private String serial;
     @ApiModelProperty("产品型号")
     private String model;
+    @ApiModelProperty(value = "处理器频率",notes = "单位Mhz")
+    private String armFreq;
 
     /**
      * 从列表中读取出cpu信息

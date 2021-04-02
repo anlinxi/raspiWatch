@@ -93,7 +93,10 @@ function showCpu(json) {
     cpuUse = parseFloat(cpuUse)
     showCpuCharts(cpuUse)
     $("#cpu-count").text(4)
-    $("#cpu-freq").text('#')
+    $("#cpu-freq").text(json.cpuInfo.armFreq)
+    $("#cpu-model").text(json.cpuInfo.model)
+    $("#user").text(json.cpuInfo.hardware)
+    $("#os").text(json.cpuInfo.revision2)
 }
 
 //hcharts参数
