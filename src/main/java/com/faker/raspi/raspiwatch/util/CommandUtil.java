@@ -31,9 +31,9 @@ public class CommandUtil {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             int exitCode = exeCommand(command, out);
             if (exitCode == 0) {
-                logger.info("命令运行成功:" + System.currentTimeMillis());
+//                logger.info("命令运行成功:" + System.currentTimeMillis());
             } else {
-                logger.info("命令运行失败:" + System.currentTimeMillis());
+                logger.warn("命令运行失败:" + System.currentTimeMillis());
             }
             return out.toString(DEFAULT_CHARSET);
         } catch (Exception e) {

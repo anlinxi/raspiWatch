@@ -35,7 +35,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
     WebSocket webSocket;
 
     @ApiModelProperty(value = "间隔时间", notes = "单位毫秒")
-    private long time = 333l;
+    private long time = 500l;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -49,7 +49,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
             String json = null;
             try {
                 RaspiInfo raspiInfo = SystemInfoReader.getRaspiInfo();
-                logger.info(raspiInfo.toString());
+//                logger.info(raspiInfo.toString());
                 json = JSONObject.toJSONString(raspiInfo);
             } catch (Exception e) {
                 logger.error("获取树莓派信息错误:" + e.getMessage());
