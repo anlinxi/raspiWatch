@@ -49,6 +49,7 @@ public class MemUseInfo {
             }
             System.out.println(stringList);
             this.name = stringList.get(0).substring(0).substring(0, stringList.get(0).length() - 1);
+            this.total = getShowTextList(stringList, 1);
             this.used = getShowTextList(stringList, 2);
             this.free = getShowTextList(stringList, 3);
             this.shared = getShowTextList(stringList, 4);
