@@ -53,7 +53,7 @@ function showMen(json) {
  */
 function showCpu(json) {
     var cpuUse = json.cpuUseInfo.replace('%', '')
-    cpuUse = parseFloat(cpuUse) * 10
+    cpuUse = parseFloat(cpuUse)
     showCpuCharts(cpuUse)
     $("#cpu-count").text(4)
     $("#cpu-freq").text('#')

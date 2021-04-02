@@ -35,7 +35,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
     WebSocket webSocket;
 
     @ApiModelProperty(value = "间隔时间", notes = "单位毫秒")
-    private long time = 1000l;
+    private long time = 333l;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
