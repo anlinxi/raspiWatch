@@ -10,7 +10,7 @@ var ws = null
 if (window.location.href.indexOf('http://') != -1) {
     ws = "ws://" + window.location.href.replace('http://', '').replace('/index.html', '')
 } else if (window.location.href.indexOf('https://') != -1) {
-    ws = "wss://" + window.location.href.replace('http://s', '').replace('/index.html', '')
+    ws = "wss://" + window.location.href.replace('https://', '').replace('/index.html', '')
 }
 
 //判断当前浏览器是否支持WebSocket
