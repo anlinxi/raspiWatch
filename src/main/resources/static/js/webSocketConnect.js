@@ -5,6 +5,14 @@
 //定义全局变量websocket
 var websocket = null;
 
+//地址
+var ws = null
+if (window.location.href.indexOf('http://') != -1) {
+    ws = "ws://" + window.location.href.replace('http://', '').replace('/index.html', '')
+} else if (window.location.href.indexOf('https://') != -1) {
+    ws = "wss://" + window.location.href.replace('http://s', '').replace('/index.html', '')
+}
+
 //判断当前浏览器是否支持WebSocket
 if ('WebSocket' in window) {
     //连接WebSocket节点
@@ -14,7 +22,7 @@ if ('WebSocket' in window) {
 }
 
 function getNewWebSocket() {
-    var _websocket = new WebSocket("ws://" + host + "/connectWebSocket/" + new Date().getTime());
+    var _websocket = new WebSocket(ws + "/connectWebSocket/" + new Date().getTime());
     //连接发生错误的回调方法
     _websocket.onerror = function () {
         setTimeout(function () {
