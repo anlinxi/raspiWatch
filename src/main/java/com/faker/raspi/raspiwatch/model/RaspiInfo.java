@@ -29,4 +29,7 @@ public class RaspiInfo {
 
     @ApiModelProperty("树莓派时间")
     private String dateTime;
+
+    @ApiModelProperty(value = "树莓派启动时间", notes = "单位秒")
+    private Long sysStartTime;
 }

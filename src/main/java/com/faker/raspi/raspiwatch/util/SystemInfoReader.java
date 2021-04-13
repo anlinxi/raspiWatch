@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class SystemInfoReader {
 
@@ -60,7 +61,21 @@ public class SystemInfoReader {
         raspiInfo.setDiskUseInfoList(getDiskUseInfo());
         raspiInfo.setMemUseInfoList(getMemUseInfo());
         raspiInfo.setDateTime(sdf.format(new Date()));
+        raspiInfo.setSysStartTime(getSysStartTime());
         return raspiInfo;
+    }
+
+    /**
+     * 获取树莓派启动时间
+     *
+     * @return 单位秒
+     */
+    private static Long getSysStartTime() {
+        String com1 = "cat /proc/uptime";
+        String df = CommandUtil.exeCommand(com1);
+        String startTimeStr = df.split("\\.")[0];
+        Long startTime = Long.parseLong(startTimeStr);
+        return startTime;
     }
 
     /**
