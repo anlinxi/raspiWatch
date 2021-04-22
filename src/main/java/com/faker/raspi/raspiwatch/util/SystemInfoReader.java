@@ -49,12 +49,28 @@ public class SystemInfoReader {
     }
 
     private static String getTaskList() {
-        if(null == top){
+        if (null == top) {
             String com1 = "top -b -n 1";
             top = CommandUtil.exeCommand(com1);
         }
         List<String> list = getTextList(top);
-        logger.info(list.toString()
+        logger.info(list.toString());
+        if (list.size() > 6) {
+            for (int i = 6; i < list.size(); i++) {
+                Map<String,String> map = getTaskInfo(list.get(i));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 转化top信息
+     * PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+     * 17895 pi        20   0 5270664   1.6g  27068 S 245.1  42.1  48:32.42 java
+     * @param topLine
+     * @return
+     */
+    private static Map<String, String> getTaskInfo(String topLine) {
         return null;
     }
 
@@ -145,7 +161,7 @@ public class SystemInfoReader {
      * @return 负载百分比
      */
     public static String getCpuUseInfo() {
-        if(null == top){
+        if (null == top) {
             String com1 = "top -b -n 1";
             top = CommandUtil.exeCommand(com1);
         }
