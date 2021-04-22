@@ -1,9 +1,6 @@
 package com.faker.raspi.raspiwatch.util;
 
-import com.faker.raspi.raspiwatch.model.CpuInfo;
-import com.faker.raspi.raspiwatch.model.DiskUseInfo;
-import com.faker.raspi.raspiwatch.model.MemUseInfo;
-import com.faker.raspi.raspiwatch.model.RaspiInfo;
+import com.faker.raspi.raspiwatch.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,32 +45,6 @@ public class SystemInfoReader {
         logger.info("树莓派进程运行信息:" + getTaskList());
     }
 
-    private static String getTaskList() {
-        if (null == top) {
-            String com1 = "top -b -n 1";
-            top = CommandUtil.exeCommand(com1);
-        }
-        List<String> list = getTextList(top);
-        logger.info(list.toString());
-        if (list.size() > 6) {
-            for (int i = 6; i < list.size(); i++) {
-                Map<String,String> map = getTaskInfo(list.get(i));
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 转化top信息
-     * PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
-     * 17895 pi        20   0 5270664   1.6g  27068 S 245.1  42.1  48:32.42 java
-     * @param topLine
-     * @return
-     */
-    private static Map<String, String> getTaskInfo(String topLine) {
-        return null;
-    }
-
     /**
      * 日期格式化
      */
@@ -96,6 +67,49 @@ public class SystemInfoReader {
         raspiInfo.setDateTime(sdf.format(new Date()));
         raspiInfo.setSysStartTime(getSysStartTime());
         return raspiInfo;
+    }
+
+    /**
+     * 获取top进程信息列表
+     *
+     * @return
+     */
+    private static List<TaskInfo> getTaskList() {
+        List<TaskInfo> taskInfoList = new ArrayList<>();
+        if (null == top) {
+            String com1 = "top -b -n 1";
+            top = CommandUtil.exeCommand(com1);
+        }
+        List<String> list = getTextList(top);
+        logger.info(list.toString());
+        if (list.size() > 6) {
+            for (int i = 6; i < list.size(); i++) {
+                TaskInfo taskInfo = getTaskInfo(list.get(i));
+                taskInfoList.add(taskInfo);
+            }
+        }
+        return taskInfoList;
+    }
+
+    /**
+     * 转化解析一行top信息
+     * PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+     * 17895 pi        20   0 5270664   1.6g  27068 S 245.1  42.1  48:32.42 java
+     *
+     * @param topLine
+     * @return
+     */
+    private static TaskInfo getTaskInfo(String topLine) {
+        String[] arr = topLine.split(" ");
+        List<String> dataList = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            String data = arr[i];
+            if (null != data && !"".equals(data.trim())) {
+                dataList.add(data);
+            }
+        }
+        TaskInfo taskInfo = new TaskInfo(dataList.get(0),dataList.get(1),dataList.get(2),dataList.get(3),dataList.get(4),dataList.get(5),dataList.get(6),dataList.get(7),dataList.get(8),dataList.get(9),dataList.get(10),dataList.get(11));
+        return taskInfo;
     }
 
     /**

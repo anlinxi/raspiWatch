@@ -36,4 +36,7 @@ public class RaspiInfo {
     @ApiModelProperty(value = "树莓派启动时间", notes = "单位秒")
     private Long sysStartTime;
 
+    @ApiModelProperty("树莓派进程使用信息")
+    private List<TaskInfo> taskList;
+
 }
