@@ -28,6 +28,10 @@ public class SystemInfoReader {
      * 系统换行符
      */
     private static String lineSeparator = System.lineSeparator();
+    /**
+     * top命令
+     */
+    private static String top = null;
 
     /**
      * 测试的主方法
@@ -41,6 +45,17 @@ public class SystemInfoReader {
         logger.info("树莓派CPU使用信息:" + getCpuUseInfo());
         logger.info("树莓派硬盘占有信息:" + getDiskUseInfo());
         logger.info("树莓派内存使用信息:" + getMemUseInfo());
+        logger.info("树莓派进程运行信息:" + getTaskList());
+    }
+
+    private static String getTaskList() {
+        if(null == top){
+            String com1 = "top -b -n 1";
+            top = CommandUtil.exeCommand(com1);
+        }
+        List<String> list = getTextList(top);
+        logger.info(list.toString()
+        return null;
     }
 
     /**
@@ -130,8 +145,10 @@ public class SystemInfoReader {
      * @return 负载百分比
      */
     public static String getCpuUseInfo() {
-        String com1 = "top -b -n 1";
-        String top = CommandUtil.exeCommand(com1);
+        if(null == top){
+            String com1 = "top -b -n 1";
+            top = CommandUtil.exeCommand(com1);
+        }
         //md正则太难了，还不如截取呢...
         String cpuStart = "%Cpu(s): ";
         String cpuUse = top.substring(top.indexOf(cpuStart) + cpuStart.length(), top.indexOf(" us,")).trim();
