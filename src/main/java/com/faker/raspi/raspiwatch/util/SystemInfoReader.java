@@ -66,6 +66,7 @@ public class SystemInfoReader {
         raspiInfo.setMemUseInfoList(getMemUseInfo());
         raspiInfo.setDateTime(sdf.format(new Date()));
         raspiInfo.setSysStartTime(getSysStartTime());
+        raspiInfo.setTaskList(getTaskList());
         return raspiInfo;
     }
 
