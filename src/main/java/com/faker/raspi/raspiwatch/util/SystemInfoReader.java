@@ -55,7 +55,9 @@ public class SystemInfoReader {
      */
     public static RaspiInfo getRaspiInfo() {
         RaspiInfo raspiInfo = new RaspiInfo();
-        raspiInfo.setTemperature(String.valueOf(getTemperature()) + "℃");
+        Float temp = getTemperature();
+        raspiInfo.setTemperature(String.valueOf(temp) + "℃");
+        raspiInfo.setTemperatureMax(temp);
         raspiInfo.setCpuInfo(getCpuInfo());
         raspiInfo.setCpuUseInfo(getCpuUseInfo());
         raspiInfo.setDiskUseInfoList(getDiskUseInfo());
