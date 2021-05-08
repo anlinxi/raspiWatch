@@ -82,9 +82,13 @@ public class SystemInfoReader {
             top = CommandUtil.exeCommand(com1);
         }
         List<String> list = getTextList(top);
-        logger.info(list.toString());
         if (list.size() > 6) {
-            for (int i = 6; i < list.size(); i++) {
+            //只取前20个
+            int end = 26;
+            if (list.size() < 16) {
+                end = list.size();
+            }
+            for (int i = 6; i < end; i++) {
                 TaskInfo taskInfo = getTaskInfo(list.get(i));
                 taskInfoList.add(taskInfo);
             }
@@ -109,7 +113,7 @@ public class SystemInfoReader {
                 dataList.add(data);
             }
         }
-        TaskInfo taskInfo = new TaskInfo(dataList.get(0),dataList.get(1),dataList.get(2),dataList.get(3),dataList.get(4),dataList.get(5),dataList.get(6),dataList.get(7),dataList.get(8),dataList.get(9),dataList.get(10),dataList.get(11));
+        TaskInfo taskInfo = new TaskInfo(dataList.get(0), dataList.get(1), dataList.get(2), dataList.get(3), dataList.get(4), dataList.get(5), dataList.get(6), dataList.get(7), dataList.get(8), dataList.get(9), dataList.get(10), dataList.get(11));
         return taskInfo;
     }
 
