@@ -37,6 +37,9 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
     @ApiModelProperty(value = "间隔时间", notes = "单位毫秒")
     private long time = 500l;
 
+    @ApiModelProperty("树莓派历时最高温度")
+    private Float temperatureMax;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         logger.info("系统初始化完毕，开始推送树莓派信息...");
@@ -50,6 +53,7 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
             String json = null;
             try {
                 RaspiInfo raspiInfo = SystemInfoReader.getRaspiInfo();
+                this.getMaxtemperature(raspiInfo);
 //                logger.info(raspiInfo.toString());
                 json = JSONObject.toJSONString(raspiInfo);
             } catch (Exception e) {
@@ -66,6 +70,21 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
         }
     }
 
+    /**
+     * 记录和设置最高温度
+     * @param raspiInfo
+     */
+    private void getMaxtemperature(RaspiInfo raspiInfo) {
+        if (null == this.temperatureMax) {
+            this.temperatureMax = raspiInfo.getTemperatureMax();
+        } else {
+            if (raspiInfo.getTemperatureMax() > this.temperatureMax) {
+                this.temperatureMax = raspiInfo.getTemperatureMax();
+            }
+        }
+        raspiInfo.setTemperatureMax(this.temperatureMax);
+    }
+
     public long getTime() {
         return time;
     }
@@ -73,4 +92,6 @@ public class StartSendRaspiInfoToWebSocket implements ApplicationRunner {
     public void setTime(long time) {
         this.time = time;
     }
+
+
 }

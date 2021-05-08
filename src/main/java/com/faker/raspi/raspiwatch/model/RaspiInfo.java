@@ -15,6 +15,9 @@ public class RaspiInfo {
     @ApiModelProperty("树莓派温度")
     private String temperature;
 
+    @ApiModelProperty("树莓派历时最高温度")
+    private Float temperatureMax;
+
     @ApiModelProperty("树莓派CPU信息")
     private CpuInfo cpuInfo;
 
@@ -29,4 +32,11 @@ public class RaspiInfo {
 
     @ApiModelProperty("树莓派时间")
     private String dateTime;
+
+    @ApiModelProperty(value = "树莓派启动时间", notes = "单位秒")
+    private Long sysStartTime;
+
+    @ApiModelProperty("树莓派进程使用信息")
+    private List<TaskInfo> taskList;
+
 }
